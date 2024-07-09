@@ -6,17 +6,18 @@
 # https://pythonspeed.com/articles/base-image-python-docker-images/
 FROM python:3.8
 
+
 # Add the NodeSource PPA
 # (see: https://github.com/nodesource/distributions/blob/master/README.md)
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 
 # Install any additional OS-level packages you need via apt-get. RUN statements
 # add additional layers to your image, increasing its final size. Keep your
 # image small by combining related commands into one RUN statement, e.g.,
-#
+
 # RUN apt-get update && \
-#     apt-get install -y python-pip
-#
+#     apt-get install -y python3-pip
+
 # Read more on Dockerfile best practices at the source:
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices
 RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client nodejs
