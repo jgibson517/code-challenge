@@ -8,30 +8,39 @@ from rest_framework.exceptions import ParseError
 
 
 class Home(TemplateView):
-    template_name = 'parserator_web/index.html'
+    template_name = "parserator_web/index.html"
 
 
 class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
-        params = {"input_string": None, 
-                    "address_components" : None,
-                    "address_type" : None} 
+        params = {
+            "input_string": None,
+            "address_components": None,
+            "address_type": None,
+        }
 
         input_string = request.GET.get("address")
-       
+
         if not input_string:
-            return Response(params) 
+            return Response(params)
 
         try:
             address_comps, address_type = self.parse(input_string)
         except RepeatedLabelError as e:
-            raise ParseError(f"Error parsing inputed string: {e.original_string}. Address may have duplicated parts")
-        
-        return Response({"input_string": input_string, 
-                    "address_components" : address_comps,
-                    "address_type" : address_type}) 
+            raise ParseError(
+                f"Error parsing inputed string: {e.original_string}. \
+                    Address may have duplicated parts"
+            )
+
+        return Response(
+            {
+                "input_string": input_string,
+                "address_components": address_comps,
+                "address_type": address_type,
+            }
+        )
 
     def parse(self, address):
         address_components, address_type = usaddress.tag(address)

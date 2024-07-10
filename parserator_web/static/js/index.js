@@ -1,16 +1,14 @@
 /* TODO: Flesh this out to connect the form to the API and render results
    in the #address-results div. */
 
-   const url = "http://localhost:8000/api/parse/";
-
+   var url = "http://localhost:8000/api/parse/";
    // source for reseting HTML table: https://stackoverflow.com/questions/47214759/how-to-reset-an-html-table-to-its-original-after-changing-it-with-a-javascript-f
-   const blankTable = document.getElementById("results_table").innerHTML
+   var blankTable = document.getElementById("results_table").innerHTML;
 
-   document.getElementById('input_form').onsubmit = async function(event) {
+   async function makeGet(event)  {
        event.preventDefault();
    
        let input_string = document.getElementById('input_form').elements['address'].value;
-       console.log(input_string); 
    
        const queryTerms = new URLSearchParams({ address: input_string });
    
@@ -55,7 +53,9 @@
            console.error(error.message);
        }
    };
-
    
+   const inputForm = document.getElementById("input_form");
+   inputForm.addEventListener("submit", makeGet);
+
 
 
