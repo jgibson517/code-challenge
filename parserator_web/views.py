@@ -22,7 +22,7 @@ class AddressParse(APIView):
         }
 
         input_string = request.GET.get("address")
-
+        # return empty response if no address inputted
         if not input_string:
             return Response(params)
 
@@ -43,5 +43,6 @@ class AddressParse(APIView):
         )
 
     def parse(self, address):
+        """Parses address, returns address type and components"""
         address_components, address_type = usaddress.tag(address)
         return address_components, address_type

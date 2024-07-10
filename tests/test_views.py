@@ -2,7 +2,7 @@ import pytest  # noqa: F401
 
 
 def test_api_parse_succeeds(client):
-
+    """Check if returned address matches expected components"""
     address_string = "123 main st chicago il"
     resp = client.get(
         "/api/parse/",
@@ -20,7 +20,7 @@ def test_api_parse_succeeds(client):
 
 
 def test_api_parse_raises_error(client):
-
+    """Test if bad address returns bad response code"""
     address_string = "123 main st chicago il 123 main st"
     resp = client.get("/api/parse/", {"address": address_string})
     assert resp.status_code == 400

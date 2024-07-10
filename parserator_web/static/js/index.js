@@ -9,9 +9,9 @@
        event.preventDefault();
    
        let input_string = document.getElementById('input_form').elements['address'].value;
-   
        const queryTerms = new URLSearchParams({ address: input_string });
-   
+       
+        // source for JS fetch usgae: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
        try {
            const response = await fetch(`${url}?${queryTerms}`, {
                method: 'GET'
@@ -23,18 +23,16 @@
                alert(respData.detail);
            }
            
-   
            let results = document.getElementById("address-results");
            results.style.display = "block";
    
            document.getElementById("parse-type").textContent = respData.address_type;
    
            let addressParts = respData.address_components;
-
            let table = document.getElementById("results_table");
+           // reset table before populating 
            table.innerHTML = blankTable; 
    
-
            for (let tag in addressParts) {
                if (addressParts.hasOwnProperty(tag)) {
                    let part = addressParts[tag];
@@ -55,6 +53,7 @@
    };
    
    const inputForm = document.getElementById("input_form");
+   // source for JS event listener: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
    inputForm.addEventListener("submit", makeGet);
 
 
