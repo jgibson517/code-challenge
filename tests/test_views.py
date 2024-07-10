@@ -1,15 +1,26 @@
-import pytest
+import pytest  # noqa: F401
 
 
 def test_api_parse_succeeds(client):
-    # TODO: Finish this test. Send a request to the API and confirm that the
-    # data comes back in the appropriate format.
-    address_string = '123 main st chicago il'
-    pytest.fail()
+    """Check if returned address matches expected components"""
+    address_string = "123 main st chicago il"
+    resp = client.get(
+        "/api/parse/",
+        {"address": address_string},
+        headers={"accept": "application/json"},
+    )
+    parsed_address = resp.data["address_components"]
+    assert parsed_address == {
+        "AddressNumber": "123",
+        "StreetName": "main",
+        "StreetNamePostType": "st",
+        "PlaceName": "chicago",
+        "StateName": "il",
+    }
 
 
 def test_api_parse_raises_error(client):
-    # TODO: Finish this test. The address_string below will raise a
-    # RepeatedLabelError, so ParseAddress.parse() will not be able to parse it.
-    address_string = '123 main st chicago il 123 main st'
-    pytest.fail()
+    """Test if bad address returns bad response code"""
+    address_string = "123 main st chicago il 123 main st"
+    resp = client.get("/api/parse/", {"address": address_string})
+    assert resp.status_code == 400
